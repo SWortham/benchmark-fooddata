@@ -1,0 +1,23 @@
+{
+  "name": "fooddata-benchmark",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc -w",
+    "dev": "nodemon build/index.js",
+    "start": "node build/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fastify": "~4.15.0",
+    "http": "~0.0.1-security"
+  },
+  "devDependencies": {
+    "@types/node": "~18.16.0",
+    "typescript": "~5.0.4",
+    "nodemon": "~2.0.22"
+  }
+}
