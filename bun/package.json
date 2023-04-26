@@ -7,8 +7,6 @@
     "mitata": "^0.1.3",
     "peechy": "latest",
     "prettier": "^2.4.1",
-    "react": "next",
-    "react-dom": "next",
     "typescript": "^5.0.2"
   },
   "private": true,
