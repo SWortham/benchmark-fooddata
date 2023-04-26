@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "sourceRoot": "lib",
+    "outDir": "dist",
+    "lib": [
+      "ESNext"
+    ],
+    "rootDirs": [                             /* List of root folders whose combined content represents the structure of the project at runtime. */
+      "./src",
+      "./test"
+    ],
+    "target": "esnext",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    // "bun-types" is the important part
+    "types": [
+      "bun-types"
+    ],
+    "moduleResolution": "node",
+  }
+}
