@@ -29,18 +29,15 @@ app.get('/food/:id', (c) => {
 // Response:
 // array of fdcId of each matching food
 app.get('/search/nutrients/:nutrients', (c) => {
-  const nutrients = c.req.param("nutrients");
-  const nutrientFilters = nutrients.split(",");
+  const nutrientFilter = c.req.param("nutrients");
 
-  for (const nutrientFilter of nutrientFilters) {
-    const nutrientIdAndRange = nutrientFilter.split(":");
-    const nutrientId = parseInt(nutrientIdAndRange[0]);
-    const [minValueString, maxValueString] = nutrientIdAndRange[1].split("-");
-    const minValue = parseInt(minValueString);
-    const maxValue = parseInt(maxValueString);    
-    const matchingFdcIds = foodData.filterByNutrient(nutrientId, minValue, maxValue);
-    return c.json(matchingFdcIds);
-  }
+  const nutrientIdAndRange = nutrientFilter.split(":");
+  const nutrientId = parseInt(nutrientIdAndRange[0]);
+  const [minValueString, maxValueString] = nutrientIdAndRange[1].split("-");
+  const minValue = parseFloat(minValueString);
+  const maxValue = parseFloat(maxValueString);    
+  const matchingFdcIds = foodData.filterByNutrient(nutrientId, minValue, maxValue);
+  return c.json(matchingFdcIds);
 })
 
 export default app;

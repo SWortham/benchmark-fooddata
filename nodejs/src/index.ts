@@ -1,7 +1,7 @@
 import Fastify, { FastifyInstance, RouteShorthandOptions } from 'fastify'
 import { FoodData } from './food-data'
 
-const server: FastifyInstance = Fastify({logger: true})
+const server: FastifyInstance = Fastify({disableRequestLogging: true, })
 const foodData = new FoodData();
 
 const opts: RouteShorthandOptions = {
@@ -40,19 +40,15 @@ server.get('/food/:id', opts, async (request, reply) => {
 // Response:
 // array of fdcId of each matching food
 server.get('/search/nutrients/:nutrients', async (request, reply) => {
-  const { nutrients } = request.params as Record<string, string>;
+  const { nutrientFilter } = request.params as Record<string, string>;
 
-  const nutrientFilters = nutrients.split(",");
-
-  for (const nutrientFilter of nutrientFilters) {
-    const nutrientIdAndRange = nutrientFilter.split(":");
-    const nutrientId = parseInt(nutrientIdAndRange[0]);
-    const [minValueString, maxValueString] = nutrientIdAndRange[1].split("-");
-    const minValue = parseInt(minValueString);
-    const maxValue = parseInt(maxValueString);    
-    const matchingFdcIds = foodData.filterByNutrient(nutrientId, minValue, maxValue);
-    return reply.code(200).send(JSON.stringify(matchingFdcIds));
-  }
+  const nutrientIdAndRange = nutrientFilter.split(":");
+  const nutrientId = parseInt(nutrientIdAndRange[0]);
+  const [minValueString, maxValueString] = nutrientIdAndRange[1].split("-");
+  const minValue = parseInt(minValueString);
+  const maxValue = parseInt(maxValueString);    
+  const matchingFdcIds = foodData.filterByNutrient(nutrientId, minValue, maxValue);
+  return reply.code(200).send(JSON.stringify(matchingFdcIds));
 })
 
 const start = async () => {

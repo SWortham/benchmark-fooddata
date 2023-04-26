@@ -30,9 +30,10 @@ export class FoodData {
       }
     }
 
-    for (let nutrientAndFoods of this.nutrientMap.values()) {
+    for (let [key, nutrientAndFoods] of this.nutrientMap) {
       nutrientAndFoods = nutrientAndFoods.filter(f => f.nutrientValue);
       nutrientAndFoods.sort((a,b) => a.nutrientValue - b.nutrientValue);
+      this.nutrientMap.set(key, nutrientAndFoods);
     }
   }
 
@@ -95,7 +96,7 @@ export class FoodData {
     }
 
     return maxIndex;
-  }    
+  }  
 }
 
 export interface NutrientAndFood {

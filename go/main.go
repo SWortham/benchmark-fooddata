@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"encoding/json"
+	"time"
 
 	"github.com/fasthttp/router"
 	"github.com/valyala/fasthttp"
@@ -28,7 +29,15 @@ func main() {
 	log.Fatal(fasthttp.ListenAndServe(":3000", r.Handler))
 }
 
+func timer(name string) func() {
+	start := time.Now()
+	return func() {
+			fmt.Printf("%s took %v\n", name, time.Since(start))
+	}
+}
+
 func load() {
+	defer timer("load")()
 	content, err := os.ReadFile("./data/food-data.json")
 	if err != nil {
 			log.Fatal("Error when opening file: ", err)
@@ -40,8 +49,4 @@ func load() {
 	if err != nil {
 			log.Fatal("Error during Unmarshal(): ", err)
 	}
-
-	payloadString, err := json.Marshal(payload)
-
-	fmt.Println(string(payloadString))
 }
