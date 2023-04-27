@@ -1,29 +1,29 @@
-import Fastify, { FastifyInstance, RouteShorthandOptions } from 'fastify'
+import Fastify, { FastifyInstance } from 'fastify'
 import { FoodData } from './food-data'
 
-const server: FastifyInstance = Fastify({disableRequestLogging: true })
+const server: FastifyInstance = Fastify({logger: true, disableRequestLogging: true })
 const foodData = new FoodData();
 
-const opts: RouteShorthandOptions = {
-  schema: {
-    response: {
-      200: {
-        type: 'object',
-        properties: {
-          pong: {
-            type: 'string'
-          }
-        }
-      }
-    }
-  }
-}
+// const opts: RouteShorthandOptions = {
+//   schema: {
+//     response: {
+//       200: {
+//         type: 'object',
+//         properties: {
+//           pong: {
+//             type: 'string'
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
 
 // Parameters:
 // id = fdcId for food
 // Response:
 // complete json of food
-server.get('/food/:id', opts, async (request, reply) => {
+server.get('/food/:id', async (request, reply) => {
   const { id } = request.params as any;
   const fdcId = parseInt(id);
   const food = foodData.foodMap.get(fdcId);
