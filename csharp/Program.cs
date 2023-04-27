@@ -1,5 +1,6 @@
 
-
+var foodData = new FoodData();
+await foodData.load();
 
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
