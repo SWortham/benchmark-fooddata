@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Linq;
 
 public class FoodData
 {
@@ -13,10 +14,10 @@ public class FoodData
 	}
 
 	// contains Foods with fdcId as a key
-	private readonly Dictionary<int, Food> foodMap = new();
+	public readonly Dictionary<int, Food> foodMap = new();
 
 	// contains nutrients and their corresponding foods with nutrient id as a key
-	private readonly Dictionary<int, List<NutrientAndFood>> nutrientMap = new();
+	public readonly Dictionary<int, List<NutrientAndFood>> nutrientMap = new();
 
 	public static class JsonFileReader
 	{
@@ -52,11 +53,9 @@ public class FoodData
 			}
 		}
 
-		// for (let[key, nutrientAndFoods] of this.nutrientMap)
-		// {
-		//   nutrientAndFoods = nutrientAndFoods.filter(f => f.nutrientValue);
-		//   nutrientAndFoods.sort((a, b) => a.nutrientValue - b.nutrientValue);
-		//   this.nutrientMap.set(key, nutrientAndFoods);
-		// }
+		foreach (var key in this.nutrientMap.Keys)
+		{
+			this.nutrientMap[key] = this.nutrientMap[key].OrderBy(f => f.nutrientValue).ToList();
+		}
 	}
 }
