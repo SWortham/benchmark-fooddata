@@ -1,7 +1,7 @@
 import Fastify, { FastifyInstance, RouteShorthandOptions } from 'fastify'
 import { FoodData } from './food-data'
 
-const server: FastifyInstance = Fastify({disableRequestLogging: true, })
+const server: FastifyInstance = Fastify({disableRequestLogging: true })
 const foodData = new FoodData();
 
 const opts: RouteShorthandOptions = {
@@ -57,7 +57,7 @@ const start = async () => {
     foodData.load();
     console.timeEnd("Loading data");
     
-    await server.listen({ port: 3000 })
+    await server.listen({ port: 3000, host: '0.0.0.0' })
     console.log("Server has started")
   } catch (err) {
     console.error({err});
