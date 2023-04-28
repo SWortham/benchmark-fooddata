@@ -40,9 +40,9 @@ server.get('/food/:id', async (request, reply) => {
 // Response:
 // array of fdcId of each matching food
 server.get('/search/nutrients/:nutrients', async (request, reply) => {
-  const { nutrientFilter } = request.params as Record<string, string>;
+  const { nutrients } = request.params as Record<string, string>;
 
-  const nutrientIdAndRange = nutrientFilter.split(":");
+  const nutrientIdAndRange = nutrients.split(":");
   const nutrientId = parseInt(nutrientIdAndRange[0]);
   const [minValueString, maxValueString] = nutrientIdAndRange[1].split("-");
   const minValue = parseInt(minValueString);
