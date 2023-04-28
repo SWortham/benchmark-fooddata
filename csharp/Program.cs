@@ -23,10 +23,10 @@ app.MapGet("/search/nutrients/{nutrients}", (string nutrients) =>
 	var nutrientIdAndRange = nutrients.Split(":");
 	var nutrientId = int.Parse(nutrientIdAndRange[0]);
 	var minMax = nutrientIdAndRange[1].Split("-");
-	var minValue = int.Parse(minMax[0]);
-	var maxValue = int.Parse(minMax[1]);
+	var minValue = float.Parse(minMax[0]);
+	var maxValue = float.Parse(minMax[1]);
 	var matchingFdcIds = foodData.FilterByNutrient(nutrientId, minValue, maxValue);
 	return Results.Ok(matchingFdcIds);
 });
 	
-app.Run();
+app.Run("http://0.0.0.0:3000");

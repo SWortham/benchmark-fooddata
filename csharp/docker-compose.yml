@@ -1,0 +1,7 @@
+version: "3"
+
+services:
+  csharp-benchmark:
+    build: .
+    ports:
+      - "3000:3000"
