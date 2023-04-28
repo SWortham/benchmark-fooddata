@@ -51,18 +51,17 @@ server.get('/search/nutrients/:nutrients', async (request, reply) => {
   return reply.code(200).send(JSON.stringify(matchingFdcIds));
 })
 
-const start = async () => {
-  try {
-    console.time('Loading data');
-    foodData.load();
-    console.timeEnd("Loading data");
-    
-    await server.listen({ port: 3000, host: '0.0.0.0' })
-    console.log("Server has started")
-  } catch (err) {
-    console.error({err});
-    server.log.error(err)
-    process.exit(1)
-  }
+const start = () => {
+  console.time('Loading data');
+  foodData.load();
+  console.timeEnd("Loading data");
+  
+  server.listen({ port: 3000, host: '0.0.0.0' }, (err, address) => {
+    if (err) {
+      server.log.error(err)
+      process.exit(1)
+    }
+    console.log(`Server has started on ${address}`)
+  })    
 }
 start()
