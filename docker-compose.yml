@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  bun:
+    build: bun/.
+    environment: 
+      - NODE_ENV=production
+    ports:
+      - "3000:3000"
+    volumes:
+      - /usr/app/node_modules
+
+  csharp:
+    build: csharp/.
+    ports:
+      - "3000:3000"
+
+  go:
+    build: go/.
+    ports:
+      - "3000:3000"
+
+  nodejs:
+    build: nodejs/.
+    environment: 
+      - NODE_ENV=production
+    ports:
+      - "3000:3000"
+    volumes:
+      - /usr/app/node_modules
