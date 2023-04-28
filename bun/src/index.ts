@@ -8,6 +8,7 @@ console.timeEnd("Loaded data");
 
 const app = new Hono();
 
+
 // Parameters:
 // id = fdcId for food
 // Response:
@@ -40,4 +41,7 @@ app.get('/search/nutrients/:nutrients', (c) => {
   return c.json(matchingFdcIds);
 })
 
-export default app;
+export default {
+  port: 3000,
+  fetch: app.fetch,
+}
