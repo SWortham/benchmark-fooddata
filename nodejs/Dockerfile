@@ -1,4 +1,4 @@
-FROM node:18.16.0-slim
+FROM node:20.0.0-alpine3.17
 WORKDIR /usr/app
 COPY *.json .
 RUN npm ci
