@@ -18,7 +18,7 @@ function getFood(path: string) {
     return new Response(undefined, {status: 404});
   }
 
-  return new Response(JSON.stringify(food));
+  return (Response as any).json(food);
 }
 
 function getSearchByNutrient(path: string) {
@@ -29,7 +29,7 @@ function getSearchByNutrient(path: string) {
   const minValue = parseFloat(minValueString);
   const maxValue = parseFloat(maxValueString);    
   const matchingFdcIds = foodData.filterByNutrient(nutrientId, minValue, maxValue);
-  return new Response(JSON.stringify(matchingFdcIds));
+  return (Response as any).json(matchingFdcIds);
 }
 
 

@@ -10,7 +10,7 @@
   },
   "private": true,
   "scripts": {
-    "build-runtime": "esbuild --target=esnext  --bundle src/index.ts --format=iife --platform=browser --global-name=BUN_RUNTIME > src/runtime.out.js; cat src/runtime.footer.js >> src/runtime.out.js",
+    "build-runtime": "esbuild --define:process.env.NODE_ENV=\"production\" --target=esnext --minify --bundle src/index.ts --format=iife --platform=node --global-name=BUN_RUNTIME > ./build/index.js;",
     "build-fallback": "esbuild --target=esnext  --bundle src/fallback.ts --format=iife --platform=browser --minify > src/fallback.out.js",
     "typecheck": "tsc --noEmit && cd test && bun run typecheck",
     "fmt": "prettier --write --cache './{src,test,bench}/**/*.{mjs,ts,tsx,js,jsx}'",
