@@ -2,7 +2,9 @@ version: "3"
 
 services:
   bun:
-    build: bun/.
+    build: 
+      context: .
+      dockerfile: bun/Dockerfile
     environment: 
       - NODE_ENV=production
     ports:
@@ -21,7 +23,9 @@ services:
       - "3000:3000"
 
   nodejs:
-    build: nodejs/.
+    build: 
+      context: .
+      dockerfile: nodejs/Dockerfile
     environment: 
       - NODE_ENV=production
     ports:
