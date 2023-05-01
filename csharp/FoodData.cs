@@ -72,6 +72,10 @@ public class FoodData
 		var minIndex = FindMinIndex(nutrients, minValue);
 		var maxIndex = FindMaxIndex(nutrients, maxValue, minIndex);
 
+		if (maxIndex < minIndex) {
+			return Array.Empty<int>();
+		}
+
 		var matchingNutrientAndFoods = nutrients.GetRange(minIndex, maxIndex - minIndex + 1);
 		return matchingNutrientAndFoods.Select(f => f.fdcId);
 	}
