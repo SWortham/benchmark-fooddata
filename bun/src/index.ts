@@ -34,7 +34,7 @@ function getSearchByNutrient(path: string) {
 
 
 Bun.serve({
-  fetch(req: Request) {
+  async fetch(req: Request) {
     const url = new URL(req.url);
     const path = url.pathname;
 

@@ -110,6 +110,10 @@ func filterByNutrient(nutrientId int, minValue float64, maxValue float64) []int 
 	minIndex := findMinIndex(nutrients, minValue)
 	maxIndex := findMaxIndex(nutrients, maxValue, minIndex)
 
+	if maxIndex < minIndex {
+		return []int{}
+	}
+
 	matchingNutrientAndFoods := nutrients[minIndex : maxIndex+1]
 	fdcIds := []int{}
 

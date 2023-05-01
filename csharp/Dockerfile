@@ -14,7 +14,7 @@ COPY . .
 RUN dotnet build -c Release
 
 FROM build AS publish
-RUN dotnet publish -c Release -o /publish
+RUN dotnet publish -c Release -o /publish -p:PublishReadyToRun=true
 
 
 # Stage 3: Build and publish the code
