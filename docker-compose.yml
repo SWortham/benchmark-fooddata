@@ -32,3 +32,10 @@ services:
       - "3000:3000"
     volumes:
       - /usr/app/node_modules
+
+  python:
+    build:
+      context: .
+      dockerfile: python/Dockerfile
+    ports:
+      - "3000:3000" 

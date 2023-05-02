@@ -1,15 +1,15 @@
 import json
 from flask import Flask, make_response, request
 from flask_restful import Api, Resource, reqparse
-from flask_compress import Compress
-from logging import ERROR
+import logging
 from food_data import FoodData
 
 API_BASE_URL = '/api/v1.0'
 
 app = Flask(__name__)
-app.config['COMPRESS_ALGORITHM'] = 'gzip'
-Compress(app)
+
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 api = Api(app)
 
@@ -18,8 +18,6 @@ def output_json(data, code, headers=None):
     resp = make_response(json.dumps(data, default = lambda x: x.__dict__), code)
     resp.headers.extend(headers or {})
     return resp
-
-app.logger.setLevel(ERROR)
 
 app.logger.info("Starting application...")
 
