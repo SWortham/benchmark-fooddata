@@ -77,8 +77,7 @@ class InputFood:
 class InputFoods:
   id: int
   foodDescription: str
-  inputFood: InputFood     
-  
+  inputFood: InputFood  
 
 @dataclass
 class Food:

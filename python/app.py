@@ -32,23 +32,45 @@ class FoodApi(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('title', type=str, required=True,
-                                help='Car search',
+                                help='Foods',
                                 location='json')
         self.reqparse.add_argument('description', type=str, default="",
                                 location='json')
         super(FoodApi, self).__init__()
 
     def get(self, id: int):
-        food = foodData.foods[id]
+        food = foodData.foodMap[id]
 
         if not food:
           return None, 404
 
         return food
 
+class SearchApi(Resource):
+    decorators = []
+    
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('title', type=str, required=True,
+                                help='Search by nutrients',
+                                location='json')
+        self.reqparse.add_argument('description', type=str, default="",
+                                location='json')
+        super(SearchApi, self).__init__()
+        
+    def get(self, nutrients: str):
+        nutrientIdAndRange = nutrients.split(":")
+        nutrientId = int(nutrientIdAndRange[0])
+        [minValueString, maxValueString] = nutrientIdAndRange[1].split("-")
+        minValue = float(minValueString)
+        maxValue = float(maxValueString)
+        matchingFdcIds = foodData.filterByNutrient(nutrientId, minValue, maxValue)
+        return matchingFdcIds
+
+        
 
 api.add_resource(FoodApi, '/food/<int:id>', endpoint='food')
-
+api.add_resource(SearchApi, '/search/nutrients/<nutrients>', endpoint='search')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3000)
