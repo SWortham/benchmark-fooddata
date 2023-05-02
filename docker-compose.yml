@@ -13,12 +13,16 @@ services:
       - /usr/app/node_modules
 
   csharp:
-    build: csharp/.
+    build: 
+      context: .
+      dockerfile: csharp/Dockerfile
     ports:
       - "3000:3000"
 
   go:
-    build: go/.
+    build: 
+      context: .
+      dockerfile: go/Dockerfile
     ports:
       - "3000:3000"
 

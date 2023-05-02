@@ -8,9 +8,10 @@ EXPOSE 80
 # Stage 2: Build and publish the code
 FROM mcr.microsoft.com/dotnet/sdk:7.0.203-alpine3.17 AS build
 WORKDIR /app
-COPY csharp.csproj .
+COPY csharp/csharp.csproj .
 RUN dotnet restore
-COPY . .
+COPY csharp/ .
+COPY ./food-data.json ./data/
 RUN dotnet build -c Release
 
 FROM build AS publish
