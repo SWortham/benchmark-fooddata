@@ -1,0 +1,2 @@
+Flask-Compress==1.4.0
+Flask-RESTful==0.3.9
