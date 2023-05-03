@@ -1,10 +1,11 @@
-The purpose of this project is to benchmark four runtimes against each other to determine which is fastest. The idea is to take a real-world scenario that involves working with 5MB of in-memory collections, a REST API, and returning a lot of JSON.
+The purpose of this project is to benchmark five runtimes against each other to determine which is fastest. The idea is to take a real-world scenario that involves working with 5MB of in-memory collections, a REST API, and returning a lot of JSON.
 
 # The runtimes
 - Bun
 - C#
 - Go
 - Node.js
+- Python
 
 Each application above has the same endpoints running on the same food-data.json file. Each application loads data into memory when they start up. The time to load the data into memory is not included in the benchmark.
 
