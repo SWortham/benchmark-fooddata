@@ -76,8 +76,15 @@ public class FoodData
 			return Array.Empty<int>();
 		}
 
-		var matchingNutrientAndFoods = nutrients.GetRange(minIndex, maxIndex - minIndex + 1);
-		return matchingNutrientAndFoods.Select(f => f.fdcId);
+		var fdcIds = new List<int>(maxIndex - minIndex + 1);
+
+		for (int i = 0; i < fdcIds.Count; i++) 
+		{
+			var nutrientIndex = i + minIndex;
+			fdcIds[i] = nutrients[nutrientIndex].fdcId;
+		}
+
+		return fdcIds;
 	}
 
 	private int FindMinIndex(List<NutrientAndFood> nutrients, float value)

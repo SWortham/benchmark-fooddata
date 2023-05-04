@@ -28,7 +28,7 @@ func GetFood(ctx *fasthttp.RequestCtx) {
 	id, _ := strconv.Atoi(idString)
 	food := foodMap[id]
 
-	json.NewEncoder(ctx.Response.BodyWriter()).Encode(food)
+	json.NewEncoder(ctx.Response.BodyWriter()).Encode(&food)
 }
 
 func SearchByNutrients(ctx *fasthttp.RequestCtx) {
@@ -114,11 +114,10 @@ func filterByNutrient(nutrientId int, minValue float64, maxValue float64) []int 
 		return []int{}
 	}
 
-	matchingNutrientAndFoods := nutrients[minIndex : maxIndex+1]
-	fdcIds := []int{}
+	var fdcIds = make([]int, maxIndex - minIndex + 1)
 
-	for _, nutrientAndFood := range matchingNutrientAndFoods {
-		fdcIds = append(fdcIds, nutrientAndFood.fdcId)
+	for i := range fdcIds {
+		fdcIds[i] = nutrients[i + minIndex].fdcId
 	}
 
 	return fdcIds
