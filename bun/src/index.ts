@@ -1,51 +1,51 @@
+/// <reference types='bun-types' />
 import { FoodData } from './food-data';
 
 const foodData = new FoodData();
 console.time('Loaded data');
 foodData.load();
 console.timeEnd("Loaded data");
+const { foodMap } = foodData;
 
-const FOOD_BASE_URL = "/food/";
-const SEARCH_BASE_URL = "/search/nutrients/";
+const notFoundOpts = { status: 404 }, 
+  baseURLLen = 'http://127.0.0.1:3000/'.length;
 
-function getFood(path: string) {
-  const url = path.replace(FOOD_BASE_URL, "");
-  const id = url;
-  const fdcId = parseInt(id);
-  const food = foodData.foodMap.get(fdcId);
+const FOOD_BASE_URL = "food/", FOOD_BASE_LEN = baseURLLen + FOOD_BASE_URL.length;
+const SEARCH_BASE_URL = "search/nutrients/", SEARCH_BASE_LEN = baseURLLen + SEARCH_BASE_URL.length;
 
-  if (!food) {
-    return new Response(undefined, {status: 404});
-  }
+function getFood(req: Request) {
+  const food = foodMap.get(
+    // Get the ID
+    parseInt(req.url.substring(FOOD_BASE_LEN))
+  );
 
-  return (Response as any).json(food);
+  if (food === undefined) return new Response(null, notFoundOpts);
+  return Response.json(food);
 }
 
-function getSearchByNutrient(path: string) {
-  const nutrientFilter = path.replace(SEARCH_BASE_URL, "");
-  const nutrientIdAndRange = nutrientFilter.split(":");
-  const nutrientId = parseInt(nutrientIdAndRange[0]);
-  const [minValueString, maxValueString] = nutrientIdAndRange[1].split("-");
-  const minValue = parseFloat(minValueString);
-  const maxValue = parseFloat(maxValueString);    
-  const matchingFdcIds = foodData.filterByNutrient(nutrientId, minValue, maxValue);
-  return (Response as any).json(matchingFdcIds);
+function getSearchByNutrient(req: Request) {
+  // Get the sliced path and split
+  const nutrientIdAndRange = req.url.substring(SEARCH_BASE_LEN).split(":"),
+    minAndMax = nutrientIdAndRange[1].split("-");
+  return Response.json(
+    foodData.filterByNutrient(
+      // Nutrient ID
+      parseInt(nutrientIdAndRange[0]), 
+      // Min
+      parseFloat(minAndMax[0]), 
+      // Max
+      parseFloat(minAndMax[1])
+    )
+  );
 }
-
 
 Bun.serve({
-  async fetch(req: Request) {
-    const url = new URL(req.url);
-    const path = url.pathname;
+  fetch(req: Request) {
+    // Do not allocate memory in request whenever possible
+    if (req.url.indexOf(FOOD_BASE_URL, baseURLLen) === baseURLLen) return getFood(req);
+    if (req.url.indexOf(SEARCH_BASE_URL, baseURLLen) === baseURLLen) return getSearchByNutrient(req);
 
-    if (path.startsWith(FOOD_BASE_URL)) {
-      return getFood(path);
-    }
-    else if (path.startsWith(SEARCH_BASE_URL)) {
-      return getSearchByNutrient(path);
-    }
-
-    return new Response(undefined, {status: 404});
+    return new Response(null, notFoundOpts);
   },
 
     // this is called when fetch() throws or rejects
@@ -65,5 +65,5 @@ Bun.serve({
 
   hostname: '0.0.0.0',
 
-  baseURI: 'http://0.0.0.0:3000'
+   baseURI: 'http://0.0.0.0:3000'
 });
