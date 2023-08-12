@@ -46,7 +46,7 @@ export class FoodData {
 
     const minIndex = this.findMinIndex(nutrients, minValue);
 
-    return nutrients.substring(
+    return nutrients.slice(
       minIndex, this.findMaxIndex(nutrients, maxValue, minIndex) + 1
     ).map(getFdcID);
   }
