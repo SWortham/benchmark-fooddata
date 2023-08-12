@@ -1,6 +1,9 @@
 import { Food } from './models/food';
 import FoodDataJson from './data/food-data.json';
 
+// @ts-ignore
+const getFdcID = f => f.fdcId;
+
 export class FoodData {
   // contains Foods with fdcId as a key
   foodMap = new Map<number, Food>();
@@ -39,47 +42,34 @@ export class FoodData {
 
   filterByNutrient(nutrientId: number, minValue: number, maxValue: number) {
     const nutrients = this.nutrientMap.get(nutrientId);
-
-    if (!nutrients) {
-      return [];
-    }
+    if (nutrients === undefined) return [];
 
     const minIndex = this.findMinIndex(nutrients, minValue);
-    const maxIndex = this.findMaxIndex(nutrients, maxValue, minIndex);
 
-    const matchingNutrientAndFoods = nutrients.slice(minIndex, maxIndex + 1);
-    return matchingNutrientAndFoods.map(f => f.fdcId);
+    return nutrients.substring(
+      minIndex, this.findMaxIndex(nutrients, maxValue, minIndex) + 1
+    ).map(getFdcID);
   }
 
   private findMinIndex(nutrients: NutrientAndFood[], value: number) {
-    let low = 0;
-    let high = nutrients.length;
-    let mid = 0;
-    let minIndex = mid;
+    let low = 0, high = nutrients.length, mid = 0, minIndex = mid;
 
     while (low <= high) {
       mid = Math.floor((high + low) / 2);
 
-      if (nutrients[mid].nutrientValue < value) {
-        low = mid + 1;
-      }
+      if (nutrients[mid].nutrientValue < value) low = mid + 1;
       else if (nutrients[mid].nutrientValue > value) {
         high = mid - 1;
         minIndex = mid;
       }
-      else {
-        return mid;
-      }      
+      else return mid;  
     }
 
     return minIndex;
   }
 
   private findMaxIndex(nutrients: NutrientAndFood[], value: number, minIndex: number) {
-    let low = minIndex;
-    let high = nutrients.length - 1;
-    let mid = 0;
-    let maxIndex = mid;
+    let low = minIndex, high = nutrients.length - 1, mid = 0, maxIndex = mid;
 
     while (low <= high) {
       mid = Math.floor((high + low) / 2);
@@ -87,12 +77,8 @@ export class FoodData {
         low = mid + 1;
         maxIndex = mid;
       }
-      else if (nutrients[mid].nutrientValue > value) {
-        high = mid - 1;
-      }
-      else {
-        return mid;
-      }
+      else if (nutrients[mid].nutrientValue > value) high = mid - 1;
+      else return mid;
     }
 
     return maxIndex;
